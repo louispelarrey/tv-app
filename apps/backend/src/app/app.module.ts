@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TvMazeController } from '../tv-maze/tv-maze.controller';
-import { UserController } from '../user/user.controller';
+import { AuthModule } from '../auth/auth.module';
+import { CelebrityModule } from '../celebrity/celebrity.module';
+import { EpisodeModule } from '../episode/episode.module';
+import { SeasonModule } from '../season/season.module';
+import { ShowModule } from '../show/show.module';
 import { UserModule } from '../user/user.module';
-import { UserService } from '../user/user.service';
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -13,15 +14,20 @@ import { AppService } from './app.service';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
     }),
     UserModule,
+    ShowModule,
+    AuthModule,
+    EpisodeModule,
+    SeasonModule,
+    CelebrityModule,
     ConfigModule.forRoot()
   ],
   controllers: [AppController],
