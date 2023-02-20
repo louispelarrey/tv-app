@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
@@ -18,24 +18,24 @@ export class UserController {
 
   @Get(':id')
   // @UseGuards(JwtAuthGuard)
-  async findOne(id: number): Promise<User> {
+  async findOne(@Param() id: number): Promise<User> {
     return await this.userService.findOne(id);
   }
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return await this.userService.createUser(createUserDto.email, createUserDto.password);
+    return await this.userService.createUser(createUserDto.username, createUserDto.email, createUserDto.password);
   }
 
   @Put(':id')
   // @Roles(Role.Admin)
-  async updateUser(@Body() updateUserDto: UpdateUserDto, id: number): Promise<User> {
-    return await this.userService.updateUser(id, updateUserDto.email, updateUserDto.password);
+  async updateUser(@Body() updateUserDto: UpdateUserDto, @Param() id: number): Promise<User> {
+    return await this.userService.updateUser(id, updateUserDto.username, updateUserDto.email, updateUserDto.password);
   }
 
-  @Delete(':id')
   // @Roles(Role.Admin)
-  async deleteUser(id: number): Promise<User> {
+  @Delete(':id')
+  async deleteUser(@Param() id: number): Promise<User> {
     return await this.userService.deleteUser(id);
   }
 }

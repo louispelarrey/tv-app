@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
 import { CelebrityModule } from '../celebrity/celebrity.module';
 import { EpisodeModule } from '../episode/episode.module';
+import { RoleGuard } from '../role/guard/role.guard';
 import { SeasonModule } from '../season/season.module';
 import { ShowModule } from '../show/show.module';
 import { UserModule } from '../user/user.module';
@@ -31,7 +32,17 @@ import { AppService } from './app.service';
     ConfigModule.forRoot()
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: 'APP_INTERCEPTOR',
+      useClass: ClassSerializerInterceptor
+    },
+    {
+      provide: 'APP_GUARD',
+      useClass: RoleGuard
+    }
+  ],
 })
 export class AppModule {}
 

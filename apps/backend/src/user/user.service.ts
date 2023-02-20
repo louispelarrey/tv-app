@@ -6,48 +6,68 @@ import { User } from "./user.entity";
 @Injectable()
 export class UserService {
 
-    constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
-    ) { }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) { }
 
-    async findOne(id: number): Promise<User> {
-        const user = await this.userRepository.findOne({ where: { id } });
+  async findOne(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
 
-        return user;
-    }
+    return user;
+  }
 
-    async findByEmail(email: string): Promise<User | undefined> {
-        const user = await this.userRepository.findOne({
-            where: {
-                email: email
-            }
-        });
+  async findByEmail(email: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({
+      where: {
+        email: email
+      }
+    });
 
-        return user;
-    }
+    return user;
+  }
 
-    async findAll(): Promise<User[]> {
-        return await this.userRepository.find();
-    }
+  async findByIdentifier(identifier: string): Promise<User | undefined> {
+    const user = await this.userRepository.findOne({
+      where: [
+        { email: identifier },
+        { username: identifier },
+      ]
+    });
 
-    async createUser(email: string, password: string): Promise<User> {
-        const user = new User();
-        user.email = email;
-        user.password = password;
-        return await this.userRepository.save(user);
-    }
+    return user;
+  }
 
-    async updateUser(id: number, email: string, password: string): Promise<User> {
-        const user = await this.userRepository.findOne({ where: { id } });
-        user.email = email;
-        user.password = password;
-        return await this.userRepository.save(user);
-    }
 
-    async deleteUser(id: number): Promise<User> {
-        const user = await this.userRepository.findOne({ where: { id } });
-        return await this.userRepository.remove(user);
-    }
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+
+  async createUser(username: string, email: string, password: string): Promise<User> {
+    const user = new User();
+    user.username = username;
+    user.email = email;
+    user.password = password;
+    return await this.userRepository.save(user);
+  }
+
+  async updateUser(id: number, username: string, email: string, password: string): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    user.username = username;
+    user.email = email;
+    user.password = password;
+    return await this.userRepository.save(user);
+  }
+
+  /**
+   * Deletes User
+   *
+   * @param {number} id
+   * @returns {Promise<User>} userDeleted
+   */
+  async deleteUser(id: number): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    return await this.userRepository.remove(user);
+  }
 
 }
