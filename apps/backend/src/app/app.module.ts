@@ -2,6 +2,7 @@ import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CelebrityModule } from '../celebrity/celebrity.module';
 import { EpisodeModule } from '../episode/episode.module';
 import { RoleGuard } from '../role/guard/role.guard';
@@ -37,6 +38,10 @@ import { AppService } from './app.service';
     {
       provide: 'APP_INTERCEPTOR',
       useClass: ClassSerializerInterceptor
+    },
+    {
+      provide: 'APP_GUARD',
+      useClass: JwtAuthGuard
     },
     {
       provide: 'APP_GUARD',

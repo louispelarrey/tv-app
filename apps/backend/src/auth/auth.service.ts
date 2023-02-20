@@ -18,11 +18,12 @@ export class AuthService {
     return null;
   }
 
-  async login({username}): Promise<{access_token: string}> {
+  async login({username}: {username: string}): Promise<{access_token: string}> {
     const user = await this.userService.findByIdentifier(username);
     const payload = {
-      username: user.username,
       sub: user.id,
+      username: user.username,
+      roles: user.roles
     };
     return {
       access_token: this.jwtService.sign(payload),

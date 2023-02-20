@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
+import { Episode } from "../episode/episode.entity";
 import { Show } from "../show/show.entity";
 
 @Entity()
@@ -14,5 +15,8 @@ export class Season {
 
     @ManyToOne(() => Show, show => show.seasons)
     show: Show;
+
+    @OneToMany(() => Episode, episode => episode.season)
+    episodes: Episode[];
 }
 

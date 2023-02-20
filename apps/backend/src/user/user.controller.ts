@@ -1,6 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, SetMetadata, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { Public } from '../auth/decorators/public.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Roles } from '../role/decorators/roles.decorator';
+import { Role } from '../role/enums/role.enum';
+import { RoleGuard } from '../role/guard/role.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserIsAllowedChange } from './guard/user-is-allow-change.guard';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -11,31 +18,32 @@ export class UserController {
   ) { }
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
+  @Roles(Role.Admin)
   async findAll(): Promise<User[]> {
     return await this.userService.findAll();
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
-  async findOne(@Param() id: number): Promise<User> {
+  @UseGuards(UserIsAllowedChange)
+  async findOne(@Param('id') id: number): Promise<User> {
     return await this.userService.findOne(id);
   }
 
   @Post()
+  @Public()
   async createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return await this.userService.createUser(createUserDto.username, createUserDto.email, createUserDto.password);
+    return await this.userService.createUser(createUserDto);
   }
 
   @Put(':id')
-  // @Roles(Role.Admin)
-  async updateUser(@Body() updateUserDto: UpdateUserDto, @Param() id: number): Promise<User> {
-    return await this.userService.updateUser(id, updateUserDto.username, updateUserDto.email, updateUserDto.password);
+  @UseGuards()
+  async updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): Promise<User> {
+    return await this.userService.updateUser(id, updateUserDto);
   }
 
-  // @Roles(Role.Admin)
   @Delete(':id')
-  async deleteUser(@Param() id: number): Promise<User> {
+  @UseGuards(UserIsAllowedChange)
+  async deleteUser(@Param('id') id: number): Promise<User> {
     return await this.userService.deleteUser(id);
   }
 }

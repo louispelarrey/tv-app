@@ -16,10 +16,7 @@ export class Show {
   description: string;
 
   @Column()
-  imagePath: string;
-
-  @OneToMany(() => Episode, episode => episode.show)
-  episodes: Episode[];
+  imagePath?: string|null;
 
   @OneToMany(() => Season, season => season.show)
   seasons: Season[];
