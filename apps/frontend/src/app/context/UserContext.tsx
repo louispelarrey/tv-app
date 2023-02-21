@@ -24,7 +24,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     const localStorageAccessToken = localStorage.getItem("accessToken");
 
     if (localStorageAccessToken) {
-      setAccessToken(localStorageAccessToken);
+      setAccessToken(() => localStorageAccessToken);
     }
 
     localStorage.setItem("accessToken", accessToken);
