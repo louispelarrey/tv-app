@@ -8,6 +8,12 @@ interface Show {
   name: string;
   description: string;
   imagePath: string;
+  followedBy: User[];
+}
+
+interface User {
+  id: number;
+  username: string;
 }
 
 export function Home() {
@@ -64,7 +70,7 @@ export function Home() {
     <div>
       <StyledHome>
         {shows.length > 0 && shows.map(show => (
-          <ShowCard key={show.id} name={show.name} description={show.description} imagePath={show.imagePath} likes={0} />
+          <ShowCard key={show.id} id={show.id} name={show.name} description={show.description} imagePath={show.imagePath} likes={show.followedBy.length} />
           ))}
       </StyledHome>
     </div>

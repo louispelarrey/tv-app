@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Request } from '@nestjs/common';
 import { ShowDto } from './dto/show.dto';
 import { Show } from './show.entity';
 import { ShowService } from './show.service';
@@ -32,5 +32,10 @@ export class ShowController {
   @Delete(':id')
   async deleteShow(@Param('id') id: number): Promise<Show> {
     return await this.showService.delete(id);
+  }
+
+  @Get('/follow/:id')
+  async followShow(@Param('id') id: number, @Request() req): Promise<any> {
+    return {"add": await this.showService.follow(id, req.user.id), "message": "Show followed"};
   }
 }

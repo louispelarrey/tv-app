@@ -1,8 +1,9 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import styled from "styled-components";
 import { LikeButton } from "./LikeButton";
 
 interface ShowCardProps {
+  id: number;
   name: string;
   description: string;
   imagePath: string;
@@ -19,6 +20,12 @@ const StyleShowCard = styled.div`
   border: 1px solid black;
   border-radius: 5px;
   margin: 10px;
+
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 1px 3px 5px 5px rgba(0, 0, 0, 0.5);
+  }
 
   img {
     width: 100%;
@@ -45,11 +52,32 @@ const StyleShowCard = styled.div`
   }
 `;
 
-export const ShowCard: FC<ShowCardProps> = ({ name, description, likes, imagePath } : ShowCardProps) => {
+export const ShowCard: FC<ShowCardProps> = ({ id, name, description, likes, imagePath }: ShowCardProps) => {
 
   const [likeNumber, setLikeNumber] = useState<number>(likes);
 
-  const handleLike = () => setLikeNumber(likeNumber + 1);
+  const handleLike = (id: number) => {
+    try {
+      fetchToggleFollow(id);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const fetchToggleFollow = useCallback(async (id: number): Promise<void> => {
+    const req = await fetch(`${process.env.NX_SERVER_URL}/api/show/follow/${id}`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    });
+    const res = await req.json();
+    if(res.add) {
+      setLikeNumber(likeNumber + 1);
+    } else {
+      setLikeNumber(likeNumber - 1);
+    }
+  }, [likeNumber]);
 
   return (
     <StyleShowCard>
@@ -59,7 +87,7 @@ export const ShowCard: FC<ShowCardProps> = ({ name, description, likes, imagePat
         <p>{description}</p>
       </div>
       <div className="card-footer">
-        <LikeButton likes={likeNumber} onClick={handleLike} />
+        <LikeButton likes={likeNumber} onClick={() => handleLike(id)} />
       </div>
     </StyleShowCard>
   );
