@@ -15,9 +15,6 @@ export class Show {
   @Column()
   description: string;
 
-  @Column()
-  imagePath?: string|null;
-
   @OneToMany(() => Season, season => season.show)
   seasons: Season[];
 
@@ -32,5 +29,4 @@ export class Show {
   @ManyToMany(() => User, user => user.watchedShows, { cascade: true })
   @JoinTable()
   watchedBy: User[];
-
 }

@@ -23,7 +23,6 @@ export class ShowService {
     const show = new Show();
     show.name = showDto.name;
     show.description = showDto.description;
-    show.imagePath = showDto.imagePath;
     return await this.showRepository.save(show);
   }
 
@@ -31,7 +30,6 @@ export class ShowService {
     const show = await this.showRepository.findOne({ where: { id } });
     show.name = showDto.name;
     show.description = showDto.description;
-    show.imagePath = showDto.imagePath;
     return await this.showRepository.save(show);
   }
 
