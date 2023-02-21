@@ -1,14 +1,18 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 export const Logout = () => {
   const { setAccessToken } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  const logout = () => {
+  useEffect(() => {
     setAccessToken("");
-  }
+    localStorage.removeItem("accessToken");
+    navigate("/login");
+  }, [navigate, setAccessToken])
 
   return (
-    <button onClick={logout}>Logout</button>
+    <p>Deconnexion en cours</p>
   );
 };

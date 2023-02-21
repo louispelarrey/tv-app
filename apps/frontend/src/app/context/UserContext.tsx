@@ -5,6 +5,10 @@ interface UserContextProps {
   setAccessToken: Dispatch<SetStateAction<string>>;
 }
 
+interface UserProviderProps {
+  children: ReactNode;
+}
+
 export const UserContext = createContext<UserContextProps>({
   accessToken: "",
   setAccessToken: () => {
@@ -12,28 +16,20 @@ export const UserContext = createContext<UserContextProps>({
   },
 });
 
-interface UserProviderProps {
-  children: ReactNode;
-}
-
 export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   const [accessToken, setAccessToken] = useState("")
 
   //Stores the accessToken in a cookie when it changes
   useEffect(() => {
-    document.cookie = `accessToken=${accessToken}; path=/; secure; httponly`;
-  }, [accessToken]);
+    const localStorageAccessToken = localStorage.getItem("accessToken");
 
-  if(accessToken == "") {
-    const cookies = document.cookie.split(";").map(cookie => cookie.trim());
-    const accessTokenCookie = cookies.find(cookie => cookie.startsWith("accessToken="));
-    if(accessTokenCookie) {
-      const accessTokenValue = accessTokenCookie.split("=")[1];
-      setAccessToken(accessTokenValue);
-      console.log("accessToken", accessTokenValue)
-
+    if (localStorageAccessToken) {
+      setAccessToken(localStorageAccessToken);
     }
-  }
+
+    localStorage.setItem("accessToken", accessToken);
+
+  }, [accessToken]);
 
   return (
     <UserContext.Provider value={{ accessToken, setAccessToken }}>

@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 import styled from 'styled-components';
 
 interface InputProps {
   type: string;
   placeholder?: string
   others?: any;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const StyleInput = styled.input`
@@ -14,8 +15,7 @@ const StyleInput = styled.input`
   margin: 10px;
 `;
 
-
-export const Input: FC<any> = ({ type, placeholder, ...others }) => {
+export const Input: FC<InputProps> = ({ type, placeholder, ...others }) => {
   return (
     <StyleInput type={type} placeholder={placeholder} {...others}/>
   );
