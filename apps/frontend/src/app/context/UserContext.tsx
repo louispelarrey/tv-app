@@ -1,6 +1,6 @@
 import { createContext, Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from "react";
 
-interface UserContextProps {
+export interface UserContextProps {
   accessToken: string;
   setAccessToken: Dispatch<SetStateAction<string>>;
 }

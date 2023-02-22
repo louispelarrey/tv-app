@@ -44,7 +44,7 @@ export class ShowService {
   }
 
   async delete(id: number): Promise<Show> {
-    const show = await this.showRepository.findOne({ where: { id } });
+    const show = await this.showRepository.findOne({ where: { id: id } });
     return await this.showRepository.remove(show);
   }
 
