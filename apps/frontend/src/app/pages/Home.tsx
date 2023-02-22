@@ -1,7 +1,7 @@
 import { ShowCard } from "../components/ShowCard";
 import styled from "styled-components";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { UserContext } from "../context/UserContext";
+import { UserContext, UserContextProps } from "../context/UserContext";
 import { useLocation } from "react-router-dom";
 
 interface Show {
@@ -20,7 +20,7 @@ interface User {
 export function Home() {
 
   const [shows, setShows] = useState<Show[]>([]);
-  const { accessToken } = useContext(UserContext);
+  const { accessToken } = useContext<UserContextProps>(UserContext);
   const location = useLocation();
 
   const StyledHome = styled.div`
@@ -37,30 +37,48 @@ export function Home() {
     }
   `;
 
+  /**
+   * Fetches the shows from the database
+   */
+  const fetchShowsFromDB = useCallback(async () => {
+    const res: Response = await fetch(process.env.NX_SERVER_URL + "/api/show" + (location.pathname === "/watchlist" ? "/followed" : ""), {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`
+      },
+    })
+
+    const fetchedShows: Show[] = await res.json()
+    return fetchedShows
+  }, [accessToken, location])
+
+  /**
+   * Fetches the images for the shows
+   */
+  const fetchImagesForShows = useCallback(async (shows: Show[]) => {
+    const showsWithImagesRes: Show[] = await Promise.all(
+      shows.map(
+        (show: Show) => fetch(`http://api.tvmaze.com/singlesearch/shows?q=${show.name}`)
+          .then(res => res.json())
+          .then(res => ({ ...show, imagePath: res.image?.original }))
+      )
+    )
+    return showsWithImagesRes
+  }, [])
+
+  /**
+   * Fetches the shows from the database and then fetches the images for the shows
+   */
   const fetchShows = useCallback(async () => {
     if (!accessToken) return;
     try {
-      const res = await fetch(process.env.NX_SERVER_URL + "/api/show" + (location.pathname === "/watchlist" ? "/followed" : "") , {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${accessToken}`
-        },
-      })
-
-      const fetchedShows = await res.json()
-      const showsWithImagesRes = await Promise.all(
-        fetchedShows.map(
-          (show: Show) => fetch(`http://api.tvmaze.com/singlesearch/shows?q=${show.name}`)
-            .then(res => res.json())
-            .then(res => ({ ...show, imagePath: res.image?.original }))
-        )
-      )
-
+      const fetchedShows: Show[] = await fetchShowsFromDB()
+      const showsWithImagesRes: Show[] = await fetchImagesForShows(fetchedShows)
       setShows(showsWithImagesRes)
     } catch (error) {
       console.error(error)
     }
-  }, [accessToken, location])
+  }, [accessToken, fetchImagesForShows, fetchShowsFromDB])
 
   useEffect(() => {
     fetchShows()
@@ -73,7 +91,7 @@ export function Home() {
       <StyledHome>
         {shows.length > 0 && shows.map(show => (
           <ShowCard key={show.id} id={show.id} name={show.name} description={show.description} imagePath={show.imagePath} likes={show.followedBy.length} />
-          ))}
+        ))}
       </StyledHome>
     </div>
   );
