@@ -14,6 +14,11 @@ export class ShowController {
     return await this.showService.findAll();
   }
 
+  @Get('/followed')
+  async findAllFollowed(@Request() req): Promise<Show[]> {
+    return await this.showService.findAllFollowed(req.user.sub);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Show> {
     return await this.showService.findById(id);

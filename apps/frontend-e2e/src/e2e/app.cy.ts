@@ -1,13 +1,11 @@
-import { getGreeting } from '../support/app.po';
+import { getDeconnexion } from '../support/app.po';
 
 describe('frontend', () => {
-  beforeEach(() => cy.visit('/'));
+  beforeEach(() => cy.visit('/login'));
 
-  it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
-
+  it('should display déconnexion', () => {
+    cy.login('louispelarrey@gmail.com', 'string')
     // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome frontend');
+    getDeconnexion().contains('Déconnexion');
   });
 });

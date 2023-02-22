@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from "react";
 import styled from "styled-components";
 import { LikeButton } from "./LikeButton";
 
-interface ShowCardProps {
+export interface ShowCardProps {
   id: number;
   name: string;
   description: string;

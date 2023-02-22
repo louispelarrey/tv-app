@@ -19,6 +19,12 @@ export class ShowService {
     return await this.showRepository.find({ relations: ['followedBy'], order: { id: 'ASC' } });
   }
 
+  async findAllFollowed(userId: number): Promise<Show[]> {
+    const shows = await this.showRepository.find({ relations: ['followedBy'], order: { id: 'ASC' } });
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    return shows.filter(show => show.followedBy.includes(user));
+  }
+
   async findById(id: number): Promise<Show> {
     return await this.showRepository.findOne({ where: { id }, relations: ['followedBy'] });
   }

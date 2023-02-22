@@ -2,6 +2,7 @@ import { ShowCard } from "../components/ShowCard";
 import styled from "styled-components";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
+import { useLocation } from "react-router-dom";
 
 interface Show {
   id: number;
@@ -20,6 +21,7 @@ export function Home() {
 
   const [shows, setShows] = useState<Show[]>([]);
   const { accessToken } = useContext(UserContext);
+  const location = useLocation();
 
   const StyledHome = styled.div`
     max-width: 100vw;
@@ -38,7 +40,7 @@ export function Home() {
   const fetchShows = useCallback(async () => {
     if (!accessToken) return;
     try {
-      const res = await fetch(process.env.NX_SERVER_URL + "/api/show", {
+      const res = await fetch(process.env.NX_SERVER_URL + "/api/show" + (location.pathname === "/watchlist" ? "/followed" : "") , {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${accessToken}`
@@ -58,7 +60,7 @@ export function Home() {
     } catch (error) {
       console.error(error)
     }
-  }, [accessToken])
+  }, [accessToken, location])
 
   useEffect(() => {
     fetchShows()

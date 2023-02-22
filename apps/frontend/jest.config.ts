@@ -8,4 +8,7 @@ export default {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/apps/frontend',
+  setupFilesAfterEnv: [
+    "@testing-library/jest-dom/extend-expect"
+  ]
 };

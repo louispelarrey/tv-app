@@ -28,12 +28,13 @@ export function Menu() {
     <StyledMenu>
       {!accessToken ?
         <>
-          <Link to="/login">Connection</Link>
+          <Link to="/login">Connexion</Link>
           <Link to="/register">S'inscrire</Link>
         </>
         :
         <>
           <Link to="/">Séries</Link>
+          <Link to="/watchlist">Watchlist</Link>
           <Link to="/logout">Déconnexion</Link>
         </>
       }

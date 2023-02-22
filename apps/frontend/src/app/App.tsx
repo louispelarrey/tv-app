@@ -3,17 +3,13 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 import { Menu } from "./components/Menu";
 import { UserContext } from "./context/UserContext";
-import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Logout } from "./pages/Logout";
+import { Home, Login, Logout } from "./pages";
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
   }
-
-
 `;
 
 export const App = () => {
@@ -23,7 +19,7 @@ export const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (!accessToken && location.pathname !== "/login") {
+    if ((!accessToken) && location.pathname !== "/login") {
       navigate("/login");
     } else if (location.pathname === "/login" && accessToken) {
       navigate("/");
@@ -36,6 +32,7 @@ export const App = () => {
       <Routes>
         <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/watchlist" element={<Home />} />
         <Route path="/" element={<Home />} />
       </Routes>
       <GlobalStyle />
