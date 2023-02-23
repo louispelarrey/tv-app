@@ -5,6 +5,7 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons'
 
 interface LikeButtonProps {
   likes: number;
+  name: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -22,9 +23,9 @@ const StyledLikeButton = styled.button`
 `;
 
 
-export const LikeButton: FC<LikeButtonProps> = ({ likes, onClick }) => {
+export const LikeButton: FC<LikeButtonProps> = ({ likes, name, onClick }) => {
   return (
-    <StyledLikeButton onClick={onClick}>
+    <StyledLikeButton onClick={onClick} name={name}>
         <FontAwesomeIcon data-testid="heart-icon" icon={faHeart} />
         {likes}
     </StyledLikeButton>

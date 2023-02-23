@@ -52,8 +52,8 @@ export const Login : FC = () => {
       <Link to="/register">Pas encore de compte ?</Link>
 
       <form onSubmit={handleSubmit}>
-        <Input type="text" placeholder="Email" onChange={onUsernameChange} />
-        <Input type="password" placeholder="Password" onChange={onPasswordChange} />
+        <Input type="text" placeholder="Email/Pseudo" name="email" onChange={onUsernameChange} />
+        <Input type="password" placeholder="Mot de passe" name="password" onChange={onPasswordChange} />
         <Button type="submit">Se connecter</Button>
         <br />
         {errors && errors.map(error => (

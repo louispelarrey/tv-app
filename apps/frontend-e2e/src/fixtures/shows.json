@@ -1,0 +1,32 @@
+[
+  {
+    "id": 3,
+    "name": "Cyberpunk: Edgerunners",
+    "description": "Elle raconte une histoire indépendante sur 10 épisodes à propos d'un enfant des rues essayant de survivre dans une ville du futur obsédée par la technologie et les modifications corporelles",
+    "imagePath": "https://example.com/cyberpunk-edgerunners.jpg",
+    "followedBy": [
+      {
+        "id": 9,
+        "username": "getkharried",
+        "email": "louispelarrey@gmail.com",
+        "roles": [
+          "ADMIN"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Intouchables",
+    "description": "Oui super film",
+    "imagePath": "https://example.com/intouchables.jpg",
+    "followedBy": []
+  },
+  {
+    "id": 5,
+    "name": "azeazeaze",
+    "description": "description",
+    "imagePath": "https://example.com/aze.jpg",
+    "followedBy": []
+  }
+]

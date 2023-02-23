@@ -87,7 +87,7 @@ export const ShowCard: FC<ShowCardProps> = ({ id, name, description, likes, imag
         <p>{description}</p>
       </div>
       <div className="card-footer">
-        <LikeButton likes={likeNumber} onClick={() => handleLike(id)} />
+        <LikeButton name="like-button" likes={likeNumber} onClick={() => handleLike(id)} />
       </div>
     </StyleShowCard>
   );
