@@ -1,8 +1,15 @@
-import { ChangeEvent, FC, SyntheticEvent, useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, SpanError } from '../components';
 import { UserContext } from '../context/UserContext';
+
+interface RegisterFormInput {
+  username: string;
+  email: string;
+  password: string;
+}
 
 const StyledRegister = styled.div`
   display: flex;
@@ -13,18 +20,13 @@ const StyledRegister = styled.div`
 `;
 export const Register : FC = () => {
 
-  const [username, setUsername] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
+  const { register, handleSubmit } = useForm<RegisterFormInput>();
   const { setAccessToken } = useContext(UserContext);
-
   const [errors, setErrors] = useState<string[]>([]);
 
-  const handleSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
+  const onSubmit = async ({username, email, password}: RegisterFormInput) => {
 
-    const response = await fetch(process.env.SERVER_URL + "/api/user", {
+    const response = await fetch(process.env.NX_SERVER_URL + "/api/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,20 +47,16 @@ export const Register : FC = () => {
     setAccessToken(data.access_token);
   };
 
-  const onUsernameChange = (e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value);
-  const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
-
   return (
     <StyledRegister>
-      Se connecter
-      <Link to="/register">Pas encore de compte ?</Link>
+      Inscription
+      <Link to="/login">Déjà un compte ?</Link>
 
-      <form onSubmit={handleSubmit}>
-        <Input type="text" placeholder="Pseudo" onChange={onEmailChange} />
-        <Input type="text" placeholder="Email" onChange={onUsernameChange} />
-        <Input type="password" placeholder="Mot de passe" onChange={onPasswordChange} />
-        <Button type="submit">Se connecter</Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input type="text" placeholder="Pseudo" register={register("username")} />
+        <Input type="text" placeholder="Email" register={register("email")} />
+        <Input type="password" placeholder="Mot de passe" register={register("password")} />
+        <Button type="submit">S'inscrire</Button>
         <br />
         {errors && errors.map(error => (
           <SpanError key={error}>{error}</SpanError>

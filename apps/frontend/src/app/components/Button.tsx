@@ -10,7 +10,7 @@ interface ButtonProps {
 const StyledButton = styled.button`
   padding: 10px 20px;
   border-radius: 5px;
-  background-color: #8393ed;
+  background-color: #7987da;
   color: white;
   border: none;
   cursor: pointer;

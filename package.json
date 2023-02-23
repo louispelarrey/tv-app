@@ -78,6 +78,7 @@
     "pg": "^8.9.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.2",
     "react-is": "18.2.0",
     "react-router-dom": "^6.8.1",
     "reflect-metadata": "^0.1.13",

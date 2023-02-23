@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Menu } from "./components/Menu";
 import { UserContext } from "./context/UserContext";
 import { Home, Login, Logout } from "./pages";
+import { Register } from "./pages/Register";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -19,9 +20,9 @@ export const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if ((!accessToken) && location.pathname !== "/login") {
+    if ((!accessToken) && location.pathname !== "/login" && location.pathname !== "/register") {
       navigate("/login");
-    } else if (location.pathname === "/login" && accessToken) {
+    } else if ((location.pathname === "/login" || location.pathname === "/register") && accessToken) {
       navigate("/");
     }
   }, [accessToken, navigate, location]);
@@ -32,8 +33,14 @@ export const App = () => {
       <Routes>
         <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/watchlist" element={<Home />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+
+        {accessToken ?
+          <>
+            <Route path="/watchlist" element={<Home />} />
+            <Route path="/" element={<Home />} />
+          </>
+        : null}
       </Routes>
       <GlobalStyle />
 

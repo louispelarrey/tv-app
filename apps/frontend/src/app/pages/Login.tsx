@@ -1,8 +1,14 @@
-import { ChangeEvent, FC, SyntheticEvent, useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, SpanError } from '../components';
 import { UserContext } from '../context/UserContext';
+import { useForm } from "react-hook-form";
+
+export interface LoginFormInput {
+  email: string;
+  password: string;
+}
 
 const StyledLogin = styled.div`
   display: flex;
@@ -11,18 +17,16 @@ const StyledLogin = styled.div`
   justify-content: center;
   height: 100vh;
 `;
+
 export const Login : FC = () => {
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const { register, handleSubmit } = useForm<LoginFormInput>();
 
   const { setAccessToken } = useContext(UserContext);
 
   const [errors, setErrors] = useState<string[]>([]);
 
-  const handleSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
-
+  const onSubmit = async ({email, password} : LoginFormInput) => {
     const response = await fetch(process.env.NX_SERVER_URL + "/api/auth/login", {
       method: "POST",
       headers: {
@@ -43,17 +47,14 @@ export const Login : FC = () => {
     setAccessToken(data.access_token);
   };
 
-  const onUsernameChange = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
-
   return (
     <StyledLogin>
       Se connecter
       <Link to="/register">Pas encore de compte ?</Link>
 
-      <form onSubmit={handleSubmit}>
-        <Input type="text" placeholder="Email/Pseudo" name="email" onChange={onUsernameChange} />
-        <Input type="password" placeholder="Mot de passe" name="password" onChange={onPasswordChange} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input type="text" placeholder="Email/Pseudo" register={register("email")} />
+        <Input type="password" placeholder="Mot de passe" register={register("password")} />
         <Button type="submit">Se connecter</Button>
         <br />
         {errors && errors.map(error => (
