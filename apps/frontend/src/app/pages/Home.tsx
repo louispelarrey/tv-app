@@ -2,8 +2,8 @@ import { ShowCard } from "../components/ShowCard";
 import styled from "styled-components";
 import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { UserContext, UserContextProps } from "../context/UserContext";
-import { SearchBar, ShowContextBar } from "../components";
-import { AddShow } from "../components/AddShow";
+import { ShowContextBar } from "../components";
+import { CreateShowData } from "../components/ModalContent";
 
 interface Show {
   id: number;
@@ -35,7 +35,6 @@ export function Home() {
 
   const [shows, setShows] = useState<Show[]>([]);
   const [search, setSearch] = useState<string>("");
-
   const { accessToken } = useContext<UserContextProps>(UserContext);
 
   /**
@@ -94,13 +93,36 @@ export function Home() {
     return shows.filter((show: Show) => show.name.toLowerCase().includes(search.toLowerCase()))
   }, [search, shows])
 
+  const createShow = async ({name, description}: CreateShowData) => {
+    console.log("createShow", name, description)
+    const response = await fetch(process.env.NX_SERVER_URL + "/api/show", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({
+        "name": name,
+        "description": description,
+      }),
+    });
+
+    if (response.status !== 201) {
+      console.log("Erreur");
+      return;
+    }
+
+    const data = await response.json();
+    console.log(data);
+  };
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
   const handleClickDeleteSearch = () => setSearch("");
 
   return (
     <div>
       <StyledHome>
-        <ShowContextBar onChange={handleSearch} onClick={handleClickDeleteSearch} value={search} />
+        <ShowContextBar onChange={handleSearch} onClick={handleClickDeleteSearch} value={search} onSubmit={createShow} />
         {filterShows.map(show => (
           <ShowCard
             key={show.id}
