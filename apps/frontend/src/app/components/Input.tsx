@@ -7,6 +7,7 @@ interface InputProps {
   name?: string
   others?: any;
   register?: any;
+  value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,8 +18,8 @@ const StyleInput = styled.input`
   margin: 10px;
 `;
 
-export const Input: FC<InputProps> = ({ type, placeholder, name, register, ...others }) => {
+export const Input: FC<InputProps> = ({ type, placeholder, name, register, value, ...others }) => {
   return (
-    <StyleInput type={type} placeholder={placeholder} name={name} {...register} {...others}/>
+    <StyleInput type={type} placeholder={placeholder} name={name} value={value} {...register} {...others}/>
   );
 }

@@ -5,6 +5,7 @@ import { Menu } from "./components/Menu";
 import { UserContext } from "./context/UserContext";
 import { Home, Login, Logout } from "./pages";
 import { Register } from "./pages/Register";
+import { Watchlist } from "./pages/Watchlist";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,13 +33,13 @@ export const App = () => {
       <Menu />
       <Routes>
         <Route path="/logout" element={<Logout />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login />} />²
         <Route path="/register" element={<Register />} />
 
         {accessToken ?
           <>
-            <Route path="/watchlist" element={<Home />} />
             <Route path="/" element={<Home />} />
+            <Route path="/watchlist" element={<Watchlist />} />
           </>
         : null}
       </Routes>

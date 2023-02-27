@@ -1,8 +1,8 @@
 import { ShowCard } from "../components/ShowCard";
 import styled from "styled-components";
-import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext, UserContextProps } from "../context/UserContext";
-import { SearchBar } from "../components";
+import { useLocation } from "react-router-dom";
 
 interface Show {
   id: number;
@@ -17,32 +17,30 @@ interface User {
   username: string;
 }
 
-const StyledHome = styled.div`
-max-width: 100vw;
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-around;
-flex-wrap: wrap;
-flex-shrink: 1;
-flex-basis: 0;
-@media (max-width: 1000px) {
-  flex-direction: column;
-}
-`;
-
-export function Home() {
+export function Watchlist() {
 
   const [shows, setShows] = useState<Show[]>([]);
-  const [search, setSearch] = useState<string>("");
-
   const { accessToken } = useContext<UserContextProps>(UserContext);
+
+  const StyledHome = styled.div`
+    max-width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    flex-basis: 0;
+    @media (max-width: 1000px) {
+      flex-direction: column;
+    }
+  `;
 
   /**
    * Fetches the shows from the database
    */
   const fetchShowsFromDB = useCallback(async () => {
-    const res: Response = await fetch("/api/show", {
+    const res: Response = await fetch(process.env.NX_SERVER_URL + "/api/show/followed", {
       method: "GET",
       headers: {
         "Authorization": `Bearer ${accessToken}`
@@ -70,38 +68,27 @@ export function Home() {
   /**
    * Fetches the shows from the database and then fetches the images for the shows
    */
-  useEffect(() => {
+  const fetchShows = useCallback(async () => {
     if (!accessToken) return;
     try {
-      (async () => {
-        const fetchedShows: Show[] = await fetchShowsFromDB()
-        const showsWithImagesRes: Show[] = await fetchImagesForShows(fetchedShows)
-        setShows(showsWithImagesRes)
-      })();
+      const fetchedShows: Show[] = await fetchShowsFromDB()
+      const showsWithImagesRes: Show[] = await fetchImagesForShows(fetchedShows)
+      setShows(showsWithImagesRes)
     } catch (error) {
       console.error(error)
     }
   }, [accessToken, fetchImagesForShows, fetchShowsFromDB])
 
-  /**
-   * Filters the shows based on the search input
-   *
-   * @param shows The shows to filter
-   * @param search The search input
-   * @returns The filtered shows
-   */
-  const filterShows: Show[] = useMemo(() => {
-    return shows.filter((show: Show) => show.name.toLowerCase().includes(search.toLowerCase()))
-  }, [search, shows])
+  useEffect(() => {
+    fetchShows()
+  }, [accessToken, fetchShows]);
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
-  const handleClickDeleteSearch = () => setSearch("");
+  if (!accessToken) return null;
 
   return (
     <div>
       <StyledHome>
-        <SearchBar onChange={handleSearch} onClick={handleClickDeleteSearch} value={search} />
-        {filterShows.map(show => (
+        {shows.length > 0 && shows.map(show => (
           <ShowCard key={show.id} id={show.id} name={show.name} description={show.description} imagePath={show.imagePath} likes={show.followedBy.length} />
         ))}
       </StyledHome>

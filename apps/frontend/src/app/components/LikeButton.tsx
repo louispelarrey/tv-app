@@ -29,6 +29,5 @@ export const LikeButton: FC<LikeButtonProps> = ({ likes, name, onClick }) => {
         <FontAwesomeIcon data-testid="heart-icon" icon={faHeart} />
         {likes}
     </StyledLikeButton>
-
   );
 };
