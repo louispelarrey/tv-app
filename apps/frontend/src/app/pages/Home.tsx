@@ -2,7 +2,8 @@ import { ShowCard } from "../components/ShowCard";
 import styled from "styled-components";
 import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { UserContext, UserContextProps } from "../context/UserContext";
-import { SearchBar } from "../components";
+import { SearchBar, ShowContextBar } from "../components";
+import { AddShow } from "../components/AddShow";
 
 interface Show {
   id: number;
@@ -18,7 +19,6 @@ interface User {
 }
 
 const StyledHome = styled.div`
-max-width: 100vw;
 display: flex;
 flex-direction: row;
 align-items: center;
@@ -100,9 +100,16 @@ export function Home() {
   return (
     <div>
       <StyledHome>
-        <SearchBar onChange={handleSearch} onClick={handleClickDeleteSearch} value={search} />
+        <ShowContextBar onChange={handleSearch} onClick={handleClickDeleteSearch} value={search} />
         {filterShows.map(show => (
-          <ShowCard key={show.id} id={show.id} name={show.name} description={show.description} imagePath={show.imagePath} likes={show.followedBy.length} />
+          <ShowCard
+            key={show.id}
+            id={show.id}
+            name={show.name}
+            description={show.description}
+            imagePath={show.imagePath}
+            likes={show.followedBy.length}
+          />
         ))}
       </StyledHome>
     </div>

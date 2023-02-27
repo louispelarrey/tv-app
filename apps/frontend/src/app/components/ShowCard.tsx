@@ -1,4 +1,5 @@
 import { FC, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { LikeButton } from "./LikeButton";
 
@@ -22,6 +23,7 @@ const StyleShowCard = styled.div`
   margin: 10px;
 
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
 
   &:hover {
     box-shadow: 1px 3px 5px 5px rgba(0, 0, 0, 0.5);
@@ -56,6 +58,8 @@ export const ShowCard: FC<ShowCardProps> = ({ id, name, description, likes, imag
 
   const [likeNumber, setLikeNumber] = useState<number>(likes);
 
+  const navigate = useNavigate();
+
   const handleLike = (id: number) => {
     try {
       fetchToggleFollow(id);
@@ -79,8 +83,10 @@ export const ShowCard: FC<ShowCardProps> = ({ id, name, description, likes, imag
     }
   }, [likeNumber]);
 
+  const handleCardClick = (id: number) => navigate(`/show/${id}`);
+
   return (
-    <StyleShowCard>
+    <StyleShowCard onClick={() => handleCardClick(id)}>
       <img src={imagePath} alt={name} />
       <div className="content">
         <h2>{name}</h2>

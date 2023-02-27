@@ -5,3 +5,6 @@ export * from './SpanError';
 export * from './ShowCard';
 export * from './LikeButton';
 export * from './SearchBar';
+export * from './AddShow';
+export * from './ShowContextBar';
+export * from './ShowCard';
