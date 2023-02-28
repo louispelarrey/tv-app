@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { UserProvider } from './app/context/UserContext';
 
 import App from './app/App';
+import { SuspenseLoader } from './app/Suspense/SuspenseLoader';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,9 +13,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <BrowserRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
+      <SuspenseLoader>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </SuspenseLoader>
     </BrowserRouter>
   </StrictMode>
 );

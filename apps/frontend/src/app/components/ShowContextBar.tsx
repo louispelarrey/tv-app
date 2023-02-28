@@ -9,6 +9,9 @@ interface ShowContextBarProps {
   onClick: (e: MouseEvent<HTMLDivElement>) => void;
   value: string;
   onSubmit: (data: CreateShowData) => void;
+  openModal: () => void;
+  closeModal: () => void;
+  openModalState: boolean;
 }
 
 const StyledShowContextBar = styled.div`
@@ -22,11 +25,11 @@ const StyledShowContextBar = styled.div`
   z-index: 3;
 `;
 
-export const ShowContextBar = ({ onChange, onClick, value, onSubmit }: ShowContextBarProps) => {
+export const ShowContextBar = ({ onChange, onClick, value, onSubmit, openModal, closeModal, openModalState }: ShowContextBarProps) => {
   return (
     <StyledShowContextBar>
       <SearchBar onChange={onChange} onClick={onClick} value={value} />
-      <AddShow onSubmit={onSubmit}/>
+      <AddShow onSubmit={onSubmit} openModal={openModal} closeModal={closeModal} openModalState={openModalState} />
     </StyledShowContextBar>
   )
 }

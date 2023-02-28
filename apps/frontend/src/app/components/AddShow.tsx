@@ -7,6 +7,9 @@ import { CreateShowData, ModalContent } from './ModalContent';
 
 interface AddShowProps {
   onSubmit: (data: CreateShowData) => void;
+  openModal: () => void;
+  closeModal: () => void;
+  openModalState: boolean;
 }
 
 const StyledAddShow = styled.div`
@@ -53,17 +56,7 @@ export const contentStyle = {
 
 Modal.setAppElement('#root');
 
-export const AddShow = ({onSubmit}: AddShowProps) => {
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-
+export const AddShow = ({onSubmit, openModal, closeModal, openModalState}: AddShowProps) => {
   return (
     <StyledAddShow>
       <div onClick={openModal}>
@@ -71,7 +64,7 @@ export const AddShow = ({onSubmit}: AddShowProps) => {
       </div>
 
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={openModalState}
         onRequestClose={closeModal}
         style={contentStyle}
       >

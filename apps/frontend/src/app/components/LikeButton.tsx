@@ -14,12 +14,12 @@ const StyledLikeButton = styled.button`
   border: none;
   background: none;
   font-size: 1.5rem;
-  color: red;
+  color: #C3073F;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-
+  opacity: 0.9;
 `;
 
 

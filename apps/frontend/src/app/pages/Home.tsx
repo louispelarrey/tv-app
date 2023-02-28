@@ -31,11 +31,12 @@ flex-basis: 0;
 }
 `;
 
-export function Home() {
+export const Home = () => {
 
   const [shows, setShows] = useState<Show[]>([]);
   const [search, setSearch] = useState<string>("");
   const { accessToken } = useContext<UserContextProps>(UserContext);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   /**
    * Fetches the shows from the database
@@ -66,11 +67,7 @@ export function Home() {
     return showsWithImagesRes
   }, [])
 
-  /**
-   * Fetches the shows from the database and then fetches the images for the shows
-   */
-  useEffect(() => {
-    if (!accessToken) return;
+  const fetchShowsAndImages = useCallback(async () => {
     try {
       (async () => {
         const fetchedShows: Show[] = await fetchShowsFromDB()
@@ -80,7 +77,14 @@ export function Home() {
     } catch (error) {
       console.error(error)
     }
-  }, [accessToken, fetchImagesForShows, fetchShowsFromDB])
+  }, [fetchImagesForShows, fetchShowsFromDB])
+
+  /**
+   * Fetches the shows from the database and then fetches the images for the shows
+   */
+  useEffect(() => {
+    fetchShowsAndImages()
+  }, [fetchShowsAndImages])
 
   /**
    * Filters the shows based on the search input
@@ -93,7 +97,7 @@ export function Home() {
     return shows.filter((show: Show) => show.name.toLowerCase().includes(search.toLowerCase()))
   }, [search, shows])
 
-  const createShow = async ({name, description}: CreateShowData) => {
+  const createShow = async ({ name, description }: CreateShowData) => {
     console.log("createShow", name, description)
     const response = await fetch(process.env.NX_SERVER_URL + "/api/show", {
       method: "POST",
@@ -112,17 +116,28 @@ export function Home() {
       return;
     }
 
-    const data = await response.json();
-    console.log(data);
+    await response.json();
+    fetchShowsAndImages();
+    closeModal();
   };
 
+  const openModal = useCallback(() => setIsOpen(true), []);
+  const closeModal = useCallback(() => setIsOpen(false), []);
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearch(e.target.value);
   const handleClickDeleteSearch = () => setSearch("");
 
   return (
     <div>
       <StyledHome>
-        <ShowContextBar onChange={handleSearch} onClick={handleClickDeleteSearch} value={search} onSubmit={createShow} />
+        <ShowContextBar
+          onChange={handleSearch}
+          onClick={handleClickDeleteSearch}
+          value={search}
+          onSubmit={createShow}
+          openModal={openModal}
+          closeModal={closeModal}
+          openModalState={modalIsOpen}
+        />
         {filterShows.map(show => (
           <ShowCard
             key={show.id}

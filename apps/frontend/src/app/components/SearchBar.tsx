@@ -30,7 +30,7 @@ const StyledInput = styled(Input)`
   width: 90%;
   background-color: inherit;
   ::placeholder {
-    color: lightgray
+    color: #f1f0f0
   }
   color: white;
   border: none;
