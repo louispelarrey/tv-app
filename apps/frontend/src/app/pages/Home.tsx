@@ -5,7 +5,7 @@ import { UserContext, UserContextProps } from "../context/UserContext";
 import { ShowContextBar } from "../components";
 import { CreateShowData } from "../components/ModalContent";
 
-interface Show {
+export interface Show {
   id: number;
   name: string;
   description: string;
@@ -33,58 +33,23 @@ flex-basis: 0;
 
 export const Home = () => {
 
-  const [shows, setShows] = useState<Show[]>([]);
+  const [shows, setShows] = useState<Show[]|undefined>([]);
   const [search, setSearch] = useState<string>("");
   const { accessToken } = useContext<UserContextProps>(UserContext);
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  /**
-   * Fetches the shows from the database
-   */
-  const fetchShowsFromDB = useCallback(async () => {
-    const res: Response = await fetch("/api/show", {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${accessToken}`
-      },
-    })
-
-    const fetchedShows: Show[] = await res.json()
-    return fetchedShows
+  const setShowsFromApi = useCallback(async () => {
+    import("../utils/show")
+      .then(({ fetchShowsAndImages }) => fetchShowsAndImages(accessToken))
+      .then((shows) => setShows(shows))
   }, [accessToken])
-
-  /**
-   * Fetches the images for the shows
-   */
-  const fetchImagesForShows = useCallback(async (shows: Show[]) => {
-    const showsWithImagesRes: Show[] = await Promise.all(
-      shows.map(
-        (show: Show) => fetch(`http://api.tvmaze.com/singlesearch/shows?q=${show.name}`)
-          .then(res => res.json())
-          .then(res => ({ ...show, imagePath: res.image?.original }))
-      )
-    )
-    return showsWithImagesRes
-  }, [])
-
-  const fetchShowsAndImages = useCallback(async () => {
-    try {
-      (async () => {
-        const fetchedShows: Show[] = await fetchShowsFromDB()
-        const showsWithImagesRes: Show[] = await fetchImagesForShows(fetchedShows)
-        setShows(showsWithImagesRes)
-      })();
-    } catch (error) {
-      console.error(error)
-    }
-  }, [fetchImagesForShows, fetchShowsFromDB])
 
   /**
    * Fetches the shows from the database and then fetches the images for the shows
    */
   useEffect(() => {
-    fetchShowsAndImages()
-  }, [fetchShowsAndImages])
+    setShowsFromApi()
+  }, [setShowsFromApi])
 
   /**
    * Filters the shows based on the search input
@@ -93,8 +58,8 @@ export const Home = () => {
    * @param search The search input
    * @returns The filtered shows
    */
-  const filterShows: Show[] = useMemo(() => {
-    return shows.filter((show: Show) => show.name.toLowerCase().includes(search.toLowerCase()))
+  const filterShows: Show[]|undefined = useMemo(() => {
+    return shows?.filter((show: Show) => show.name.toLowerCase().includes(search.toLowerCase()))
   }, [search, shows])
 
   const createShow = async ({ name, description }: CreateShowData) => {
@@ -117,7 +82,7 @@ export const Home = () => {
     }
 
     await response.json();
-    fetchShowsAndImages();
+    setShowsFromApi();
     closeModal();
   };
 
@@ -138,7 +103,7 @@ export const Home = () => {
           closeModal={closeModal}
           openModalState={modalIsOpen}
         />
-        {filterShows.map(show => (
+        {filterShows && filterShows.map(show => (
           <ShowCard
             key={show.id}
             id={show.id}

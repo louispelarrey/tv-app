@@ -13,6 +13,7 @@ interface ModalContentProps {
 export interface CreateShowData {
   name: string;
   description: string;
+  data: any
 }
 
 const StyledModalContent = styled.div`

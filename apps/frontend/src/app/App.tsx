@@ -3,6 +3,7 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 import { Menu } from "./components/Menu";
 import { UserContext } from "./context/UserContext";
+import { ShowDetails } from "./pages/ShowDetails";
 
 const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
 const Login = lazy(() => import('./pages/Login').then(module => ({ default: module.Login })));
@@ -42,6 +43,7 @@ export const App = () => {
         {accessToken ?
           <>
             <Route path="/" element={<Home />} />
+            <Route path="/show/:id" element={<ShowDetails />} />
             <Route path="/watchlist" element={<Watchlist />} />
           </>
         : null}

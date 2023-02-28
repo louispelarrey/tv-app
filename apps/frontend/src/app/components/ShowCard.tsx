@@ -2,6 +2,7 @@ import { FC, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { DeleteButton } from "./DeleteButton";
+import { EditButton } from "./EditButton";
 import { LikeButton } from "./LikeButton";
 
 export interface ShowCardProps {
@@ -92,6 +93,7 @@ export const ShowCard = ({ id, name, description, likes, imagePath }: ShowCardPr
   const handleCardClick = useCallback(() => navigate(`/show/${id}`), [navigate, id]);
   const handleLike = useCallback(() => fetchToggleFollow(id), [fetchToggleFollow, id]);
   const handleDelete = useCallback(() => fetchDeleteShow(id), [fetchDeleteShow, id]);
+  const handleEdit = useCallback(() => navigate(`/edit/${id}`), [navigate, id]);
 
   return (
     <StyleShowCard>
@@ -104,6 +106,7 @@ export const ShowCard = ({ id, name, description, likes, imagePath }: ShowCardPr
       </div>
       <div className="card-footer">
         <LikeButton name="like-icon" likes={likeNumber} onClick={handleLike} />
+        <EditButton onClick={handleEdit} />
         <DeleteButton onClick={handleDelete} />
       </div>
     </StyleShowCard>

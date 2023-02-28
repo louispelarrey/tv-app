@@ -26,8 +26,8 @@ const StyledLikeButton = styled.button`
 export const LikeButton: FC<LikeButtonProps> = ({ likes, name, onClick }) => {
   return (
     <StyledLikeButton onClick={onClick} name={name}>
-        <FontAwesomeIcon data-testid="heart-icon" icon={faHeart} />
         {likes}
+        <FontAwesomeIcon data-testid="heart-icon" icon={faHeart} />
     </StyledLikeButton>
   );
 };
