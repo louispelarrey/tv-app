@@ -19,6 +19,11 @@ export class SeasonController {
     return await this.seasonService.findAll();
   }
 
+  @Get('show/:id')
+  async findByShow(@Param('id') id: number): Promise<Season[]> {
+    return await this.seasonService.findByShow(id);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: number): Promise<Season> {
     return await this.seasonService.findOne(id);

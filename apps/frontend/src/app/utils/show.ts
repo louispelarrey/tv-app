@@ -1,14 +1,21 @@
 import { Show } from "../pages";
 
-const fetchSpecificShow = async (id: number) => {
-  const response = await fetch(`api/shows/${id}`)
+const fetchSpecificShow = async (id: string, accessToken: string) => {
+  const response = await fetch(`/api/show/${id}`, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${accessToken}`
+    }
+  })
   const data = await response.json()
-  return data
+  const showWithImage = await fetchImagesForShows([data])
+  return showWithImage[0]
 }
 
+
 /**
-   * Fetches the images for the shows
-   */
+ * Fetches the images for the shows
+ */
 const fetchImagesForShows = async (shows: Show[]) => {
   const showsWithImagesRes: Show[] = await Promise.all(
     shows.map(
