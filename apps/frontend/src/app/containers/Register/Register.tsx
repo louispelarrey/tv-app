@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button, Input, SpanError } from '../../components';
 import { UserContext } from '../../context/User/UserContext';
+import { StyledRegister } from './Register.style';
 
 interface RegisterFormInput {
   username: string;
@@ -11,13 +12,6 @@ interface RegisterFormInput {
   password: string;
 }
 
-const StyledRegister = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
 export const Register : FC = () => {
 
   const { register, handleSubmit } = useForm<RegisterFormInput>();

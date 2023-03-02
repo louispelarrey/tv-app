@@ -1,8 +1,8 @@
-import { AddShow } from "./AddShow"
-import { SearchBar } from "./SearchBar"
-import styled from "styled-components"
+import { AddShow } from "../AddShow/AddShow"
+import { SearchBar } from "../SearchBar/SearchBar"
 import { ChangeEvent, MouseEvent } from "react";
-import { CreateShowData } from "./ModalContent";
+import { CreateShowData } from "../ModalContent/ModalContent";
+import StyledShowContextBar from "./ShowContextBar.style";
 
 interface ShowContextBarProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -13,17 +13,6 @@ interface ShowContextBarProps {
   closeModal: () => void;
   openModalState: boolean;
 }
-
-const StyledShowContextBar = styled.div`
-  position: sticky;
-  top: 15px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 0.3rem;
-  margin-top: 0.5rem;
-  z-index: 3;
-`;
 
 export const ShowContextBar = ({ onChange, onClick, value, onSubmit, openModal, closeModal, openModalState }: ShowContextBarProps) => {
   return (

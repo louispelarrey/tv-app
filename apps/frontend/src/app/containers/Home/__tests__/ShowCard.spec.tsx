@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
-import { ShowCard, ShowCardProps } from "../ShowCard";
+import { ShowCard, ShowCardProps } from "../ShowCard/ShowCard";
 
 describe("ShowCard", () => {
   const props: ShowCardProps = {

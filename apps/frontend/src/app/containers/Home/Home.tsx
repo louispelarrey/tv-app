@@ -1,8 +1,8 @@
-import { ShowCard } from "./ShowCard";
+import { ShowCard } from "./ShowCard/ShowCard";
 import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { UserContext, UserContextProps } from "../../context/User/UserContext";
-import { ShowContextBar } from "../../components";
-import { CreateShowData } from "./ModalContent";
+import { ShowContextBar } from "./ShowContextBar/ShowContextBar";
+import { CreateShowData } from "./ModalContent/ModalContent";
 import { ServiceContext } from "../../context/Service/ServiceContext";
 import { StyledHome } from "./Home.style";
 
@@ -58,7 +58,7 @@ export const Home = () => {
   const createShow = async ({ name, description }: CreateShowData) => {
     const response = await ShowService.createShow(name, description, accessToken);
 
-    if (response?.status !== 201) {
+    if (!response || response.status !== 201) {
       return;
     }
 

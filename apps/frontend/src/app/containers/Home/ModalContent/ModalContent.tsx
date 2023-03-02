@@ -1,9 +1,9 @@
-import { Input } from "../../components/Input/Input";
-import styled from "styled-components";
+import { Input } from "../../../components/Input/Input";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useForm } from "react-hook-form";
-import { Button } from "../../components/Button/Button";
+import { Button } from "../../../components/Button/Button";
+import { StyledForm, StyledModalContent } from "./ModalContent.style";
 
 interface ModalContentProps {
   closeModal: () => void;
@@ -14,24 +14,6 @@ export interface CreateShowData {
   name: string;
   description: string;
 }
-
-const StyledModalContent = styled.div`
-  #close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
-`;
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
 
 export const ModalContent = ({ closeModal, onSubmit }: ModalContentProps) => {
   const { register, handleSubmit } = useForm<CreateShowData>();

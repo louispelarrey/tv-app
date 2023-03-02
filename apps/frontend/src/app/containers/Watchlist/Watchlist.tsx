@@ -1,8 +1,7 @@
-import { ShowCard } from "../Home/ShowCard";
+import { ShowCard } from "../Home/ShowCard/ShowCard";
 import styled from "styled-components";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { UserContext, UserContextProps } from "../../context/User/UserContext";
-import { useLocation } from "react-router-dom";
 
 interface Show {
   id: number;

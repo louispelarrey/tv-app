@@ -1,22 +1,10 @@
 import { FC } from "react";
-import styled from "styled-components";
+import { StyledButton } from "./Button.style";
 
 interface ButtonProps {
   children: string;
   type: "submit" | "button";
 }
-
-
-const StyledButton = styled.button`
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #7282dd;
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-
-`;
 
 export const Button: FC<ButtonProps> = ({ children, type }) => {
   return (

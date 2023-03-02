@@ -1,22 +1,14 @@
 import { FC, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { Button, Input, SpanError } from '../../components';
 import { UserContext } from '../../context/User/UserContext';
 import { useForm } from "react-hook-form";
+import { StyledLogin } from './Login.style';
 
 export interface LoginFormInput {
   email: string;
   password: string;
 }
-
-const StyledLogin = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
 
 export const Login : FC = () => {
 
