@@ -1,15 +1,15 @@
 import { useContext, useEffect, lazy } from "react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
-import { Menu } from "./components/Menu";
-import { UserContext } from "./context/UserContext";
-import { ShowDetails } from "./pages/ShowDetails";
+import { Menu } from "./layouts/Menu/Menu";
+import { UserContext } from "./context/User/UserContext";
+import { ShowDetails } from "./containers/ShowDetails/ShowDetails";
 
-const Home = lazy(() => import('./pages/Home').then(module => ({ default: module.Home })));
-const Login = lazy(() => import('./pages/Login').then(module => ({ default: module.Login })));
-const Logout = lazy(() => import('./pages/Logout').then(module => ({ default: module.Logout })));
-const Register = lazy(() => import('./pages/Register').then(module => ({ default: module.Register })));
-const Watchlist = lazy(() => import('./pages/Watchlist').then(module => ({ default: module.Watchlist })));
+const Home = lazy(() => import('./containers/Home/Home').then(module => ({ default: module.Home })));
+const Login = lazy(() => import('./containers/Login/Login').then(module => ({ default: module.Login })));
+const Logout = lazy(() => import('./containers/Logout/Logout').then(module => ({ default: module.Logout })));
+const Register = lazy(() => import('./containers/Register/Register').then(module => ({ default: module.Register })));
+const Watchlist = lazy(() => import('./containers/Watchlist/Watchlist').then(module => ({ default: module.Watchlist })));
 
 const GlobalStyle = createGlobalStyle`
   body {
