@@ -1,10 +1,10 @@
 import { ShowCard } from "./ShowCard";
-import styled from "styled-components";
 import { ChangeEvent, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { UserContext, UserContextProps } from "../../context/User/UserContext";
 import { ShowContextBar } from "../../components";
 import { CreateShowData } from "./ModalContent";
 import { ServiceContext } from "../../context/Service/ServiceContext";
+import { StyledHome } from "./Home.style";
 
 export interface Show {
   id: number;
@@ -19,26 +19,13 @@ interface User {
   username: string;
 }
 
-const StyledHome = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-justify-content: space-around;
-flex-wrap: wrap;
-flex-shrink: 1;
-flex-basis: 0;
-@media (max-width: 1000px) {
-  flex-direction: column;
-}
-`;
-
 export const Home = () => {
 
-  const [shows, setShows] = useState<Show[]|undefined>([]);
+  const [shows, setShows] = useState<Show[] | undefined>([]);
   const [search, setSearch] = useState<string>("");
   const [modalIsOpen, setIsOpen] = useState(false);
 
-  const {accessToken} = useContext<UserContextProps>(UserContext);
+  const { accessToken } = useContext<UserContextProps>(UserContext);
   const {
     services: {
       ShowService,
@@ -64,26 +51,14 @@ export const Home = () => {
    * @param search The search input
    * @returns The filtered shows
    */
-  const filterShows: Show[]|undefined = useMemo(() => {
+  const filterShows: Show[] | undefined = useMemo(() => {
     return shows?.filter((show: Show) => show.name.toLowerCase().includes(search.toLowerCase()))
   }, [search, shows])
 
   const createShow = async ({ name, description }: CreateShowData) => {
-    console.log("createShow", name, description)
-    const response = await fetch(process.env.NX_SERVER_URL + "/api/show", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}`
-      },
-      body: JSON.stringify({
-        "name": name,
-        "description": description,
-      }),
-    });
+    const response = await ShowService.createShow(name, description, accessToken);
 
-    if (response.status !== 201) {
-      console.log("Erreur");
+    if (response?.status !== 201) {
       return;
     }
 

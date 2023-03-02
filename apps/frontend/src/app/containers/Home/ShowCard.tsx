@@ -1,9 +1,11 @@
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { DeleteButton } from "../../components/DeleteButton/DeleteButton";
 import { EditButton } from "../../components/EditButton/EditButton";
 import { LikeButton } from "../../components/LikeButton/LikeButton";
+import { ServiceContext } from "../../context/Service/ServiceContext";
+import { UserContext, UserContextProps } from "../../context/User/UserContext";
 
 export interface ShowCardProps {
   id: number;
@@ -64,31 +66,23 @@ export const ShowCard = ({ id, name, description, likes, imagePath }: ShowCardPr
   const [likeNumber, setLikeNumber] = useState<number>(likes);
   const navigate = useNavigate();
 
-  const fetchToggleFollow = useCallback(async (id: number): Promise<void> => {
-    const req = await fetch(`${process.env.NX_SERVER_URL}/api/show/follow/${id}`, {
-      method: "GET",
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-    const res = await req.json();
-    if (res.add) {
-      setLikeNumber(likeNumber + 1);
-    } else {
-      setLikeNumber(likeNumber - 1);
+  const {accessToken} = useContext<UserContextProps>(UserContext);
+  const {
+    services: {
+      ShowService,
     }
-  }, [likeNumber]);
+  } = useContext(ServiceContext);
+
+  const fetchToggleFollow = useCallback(async (id: number): Promise<void> => {
+    const res = await ShowService.toggleFollowShow(id, accessToken);
+    res.add ? setLikeNumber(likeNumber + 1) : setLikeNumber(likeNumber - 1);
+
+  }, [ShowService, accessToken, likeNumber]);
 
   const fetchDeleteShow = useCallback(async (id: number): Promise<void> => {
-    const req = await fetch(`${process.env.NX_SERVER_URL}/api/show/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    });
-    await req.json();
+    await ShowService.deleteShow(id, accessToken);
     navigate("/");
-  }, [navigate]);
+  }, [ShowService, accessToken, navigate]);
 
   const handleCardClick = useCallback(() => navigate(`/show/${id}`), [navigate, id]);
   const handleLike = useCallback(() => fetchToggleFollow(id), [fetchToggleFollow, id]);
