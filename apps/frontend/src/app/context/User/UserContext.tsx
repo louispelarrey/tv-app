@@ -19,16 +19,12 @@ export const UserContext = createContext<UserContextProps>({
 export const UserProvider = ({ children }: any) => {
   const [accessToken, setAccessToken] = useState("")
 
-  //Stores the accessToken in a cookie when it changes
   useEffect(() => {
-    const localStorageAccessToken = localStorage.getItem("accessToken");
+    const accessTokenStorage = localStorage.getItem("accessToken");
 
-    if (localStorageAccessToken) {
-      setAccessToken(() => localStorageAccessToken);
+    if (accessTokenStorage && accessTokenStorage !== "undefined") {
+      setAccessToken(accessTokenStorage);
     }
-
-    localStorage.setItem("accessToken", accessToken);
-
   }, [accessToken]);
 
   return (

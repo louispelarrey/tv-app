@@ -14,7 +14,7 @@ export const Login : FC = () => {
 
   const { register, handleSubmit } = useForm<LoginFormInput>();
 
-  const { setAccessToken } = useContext(UserContext);
+  const {setAccessToken} = useContext(UserContext);
 
   const [errors, setErrors] = useState<string[]>([]);
 
@@ -36,6 +36,7 @@ export const Login : FC = () => {
     }
 
     const data = await response.json();
+    localStorage.setItem("accessToken", data.access_token);
     setAccessToken(data.access_token);
   };
 

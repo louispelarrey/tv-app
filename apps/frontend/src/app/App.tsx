@@ -25,10 +25,19 @@ export const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if ((!accessToken) && location.pathname !== "/login" && location.pathname !== "/register") {
+    if (!accessToken && (location.pathname !== "/login" && location.pathname !== "/register")) {
       navigate("/login");
-    } else if ((location.pathname === "/login" || location.pathname === "/register") && accessToken) {
+    }
+    if (accessToken && (location.pathname === "/login" || location.pathname === "/register")) {
       navigate("/");
+    }
+    if(accessToken) {
+      const token = JSON.parse(atob(accessToken.split(".")[1]));
+      const expiration = new Date(token.exp * 1000);
+      const now = new Date();
+      if (expiration < now) {
+        navigate("/logout");
+      }
     }
   }, [accessToken, navigate, location]);
 
