@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components';
 import { Menu } from "./layouts/Menu/Menu";
 import { UserContext } from "./context/User/UserContext";
 import { ShowDetails } from "./containers/ShowDetails/ShowDetails";
+import Protected from "./containers/Protected/Protected";
 
 const Home = lazy(() => import('./containers/Home/Home').then(module => ({ default: module.Home })));
 const Login = lazy(() => import('./containers/Login/Login').then(module => ({ default: module.Login })));
@@ -25,13 +26,7 @@ export const App = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (!accessToken && (location.pathname !== "/login" && location.pathname !== "/register")) {
-      navigate("/login");
-    }
-    if (accessToken && (location.pathname === "/login" || location.pathname === "/register")) {
-      navigate("/");
-    }
-    if(accessToken) {
+    if (accessToken) {
       const token = JSON.parse(atob(accessToken.split(".")[1]));
       const expiration = new Date(token.exp * 1000);
       const now = new Date();
@@ -48,14 +43,9 @@ export const App = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path="/login" element={<Login />} />²
         <Route path="/register" element={<Register />} />
-
-        {accessToken ?
-          <>
-            <Route path="/" element={<Home />} />
-            <Route path="/show/:id" element={<ShowDetails />} />
-            <Route path="/watchlist" element={<Watchlist />} />
-          </>
-        : null}
+        <Route path="/" element={<Protected accessToken={localStorage.getItem("accessToken")}><Home/></Protected>} />
+        <Route path="/show/:id" element={<Protected accessToken={accessToken}><ShowDetails /></Protected>} />
+        <Route path="/watchlist" element={<Protected accessToken={accessToken}><Watchlist /></Protected>} />
       </Routes>
       <GlobalStyle />
 

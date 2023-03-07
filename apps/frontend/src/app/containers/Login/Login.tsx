@@ -1,5 +1,5 @@
 import { FC, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Input, SpanError } from '../../components';
 import { UserContext } from '../../context/User/UserContext';
 import { useForm } from "react-hook-form";
@@ -17,6 +17,8 @@ export const Login : FC = () => {
   const {setAccessToken} = useContext(UserContext);
 
   const [errors, setErrors] = useState<string[]>([]);
+
+  const navigate = useNavigate();
 
   const onSubmit = async ({email, password} : LoginFormInput) => {
     const response = await fetch(process.env.NX_SERVER_URL + "/api/auth/login", {
@@ -38,6 +40,7 @@ export const Login : FC = () => {
     const data = await response.json();
     localStorage.setItem("accessToken", data.access_token);
     setAccessToken(data.access_token);
+    navigate("/");
   };
 
   return (
