@@ -5,6 +5,7 @@ import { ShowContextBar } from "./ShowContextBar/ShowContextBar";
 import { CreateShowData } from "./ModalContent/ModalContent";
 import { ServiceContext } from "../../context/Service/ServiceContext";
 import { StyledHome } from "./Home.style";
+import useFetch from "../../hooks/useFetch";
 
 export interface Show {
   id: number;
@@ -24,6 +25,7 @@ export const Home = () => {
   const [shows, setShows] = useState<Show[] | undefined>([]);
   const [search, setSearch] = useState<string>("");
   const [modalIsOpen, setIsOpen] = useState(false);
+  const { data, error, loading } = useFetch("/api/show")
 
   const { accessToken } = useContext<UserContextProps>(UserContext);
   const {
@@ -34,8 +36,9 @@ export const Home = () => {
 
   const setShowsFromApi = useCallback(async () => {
     const shows = await ShowService.fetchShowsAndImages(accessToken)
+    console.log(data)
     setShows(shows)
-  }, [ShowService, accessToken])
+  }, [ShowService, accessToken, data])
 
   /**
    * Fetches the shows from the database and then fetches the images for the shows
