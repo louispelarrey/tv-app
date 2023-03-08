@@ -10,7 +10,6 @@ interface ProtectedProps {
 
 const Protected = ({ children, accessToken }: ProtectedProps) => {
 
-  console.log("Protected.tsx: accessToken: ", accessToken);
   if (!accessToken) {
     return <Navigate to="/login" replace />;
   }

@@ -45,7 +45,7 @@ export const Login : FC = () => {
 
   return (
     <StyledLogin>
-      Se connecter
+      Connexion à l'application
       <Link to="/register">Pas encore de compte ?</Link>
 
       <form onSubmit={handleSubmit(onSubmit)}>

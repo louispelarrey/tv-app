@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { UserContext } from '../../../context/UserContext';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import { Menu } from '../Menu';
 import '@testing-library/jest-dom';
+import { UserContext } from '../../../context/User/UserContext';
 
 test('displays login and register links when user is not logged in', () => {
   // Arrange
@@ -12,11 +12,11 @@ test('displays login and register links when user is not logged in', () => {
     setAccessToken: jest.fn(),
   };
   render(
-    <MemoryRouter>
+    <BrowserRouter>
       <UserContext.Provider value={mockContextValue}>
         <Menu />
       </UserContext.Provider>
-    </MemoryRouter>
+    </BrowserRouter>
   );
 
   // Assert

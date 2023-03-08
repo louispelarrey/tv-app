@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from 'react-router-dom';
 import { ShowCard, ShowCardProps } from "../ShowCard/ShowCard";
 
 describe("ShowCard", () => {
@@ -12,7 +13,11 @@ describe("ShowCard", () => {
   };
 
   it("renders the show card with correct props", () => {
-    render(<ShowCard {...props} />);
+    render(
+      <BrowserRouter>
+        <ShowCard {...props} />
+      </BrowserRouter>
+    );
 
     const nameElement = screen.getByText(props.name);
     const descriptionElement = screen.getByText(props.description);
