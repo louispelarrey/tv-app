@@ -54,8 +54,8 @@ export const ShowCard = ({ id, name, description, likes, imagePath }: ShowCardPr
       </div>
       <div className="card-footer">
         <LikeButton name="like-icon" likes={likeNumber} onClick={handleLike} />
-        <EditButton onClick={handleEdit} />
-        <DeleteButton onClick={handleDelete} />
+        <EditButton onClick={handleEdit} data-testid="like-button" />
+        <DeleteButton onClick={handleDelete} data-testid="delete-button" />
       </div>
     </StyleShowCard>
   );

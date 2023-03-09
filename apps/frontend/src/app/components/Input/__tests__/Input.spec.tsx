@@ -5,6 +5,7 @@ import '@testing-library/jest-dom';
 import { Input } from '../Input';
 
 describe('Input component', () => {
+
   it('should render an input element', () => {
     const onChangeMock = jest.fn();
     render(

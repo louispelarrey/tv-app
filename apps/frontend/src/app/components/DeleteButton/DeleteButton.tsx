@@ -10,7 +10,7 @@ interface DeleteButtonProps {
 export const DeleteButton = ({ onClick }: DeleteButtonProps) => {
   return (
     <StyledDeleteButton onClick={onClick}>
-      <FontAwesomeIcon data-testid="heart-icon" icon={faTrash} />
+      <FontAwesomeIcon data-testid="delete-icon" icon={faTrash} />
     </StyledDeleteButton>
   )
 }

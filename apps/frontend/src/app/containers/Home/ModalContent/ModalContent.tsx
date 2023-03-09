@@ -20,7 +20,7 @@ export const ModalContent = ({ closeModal, onSubmit }: ModalContentProps) => {
 
   return (
     <StyledModalContent>
-      <button onClick={closeModal} id="close-button">
+      <button onClick={closeModal} id="close-button" data-testid="close-button">
         <FontAwesomeIcon icon={faClose} />
       </button>
       <h2>Ajouter une série</h2>

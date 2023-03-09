@@ -11,14 +11,14 @@ export interface SearchBarProps {
 export const SearchBar = ({onChange, onClick, value}: SearchBarProps) => {
   return (
     <StyledSearchBar>
-      <StyledIcon icon={faSearch} color="white" size="2x" />
+      <StyledIcon icon={faSearch} color="white" size="2x" data-testid="search-icon"/>
       <StyledInput
         type="text"
         placeholder="Rechercher une série"
         onChange={onChange}
         value={value}
       />
-      <CustomCloseIcon onClick={onClick} />
+      <CustomCloseIcon onClick={onClick} data-testid="close-icon"/>
     </StyledSearchBar>
   );
 };

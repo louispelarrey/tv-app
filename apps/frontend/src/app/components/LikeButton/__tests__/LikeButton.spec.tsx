@@ -15,6 +15,7 @@ describe('LikeButton component', () => {
     expect(screen.getByText(likes)).toBeInTheDocument();
   });
 
+
   it('calls onClick when button is clicked', () => {
     render(<LikeButton likes={0} onClick={mockOnClick} />);
     const buttonElement = screen.getByRole('button');
