@@ -11,28 +11,29 @@ const useFetch = (url: string) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    fetch(url, {
-      signal,
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url, {
+          signal,
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
+        const data = await response.json();
         setData(data);
         setLoading(false);
-      })
-      .catch((error) => {
-        if (error.status === 401) {
-          setError("Unauthorized");
+      } catch (error: Error | any) {
+        if (error.name !== "AbortError") {
+          setError(error.message);
           setLoading(false);
-          navigate("/logout")
+          if (error.status === 401) {
+            navigate("/logout");
+          }
         }
-        if (error.status !== 401) {
-          setError(error);
-          setLoading(false);
-        }
-      });
+      }
+    };
+
+    fetchData();
 
     return () => abortController.abort();
   }, [navigate, url]);

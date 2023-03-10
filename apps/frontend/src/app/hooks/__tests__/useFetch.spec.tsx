@@ -1,5 +1,5 @@
-import { renderHook } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { renderHook, waitFor } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 import useFetch from "../useFetch";
 
 describe("useFetch", () => {
@@ -9,20 +9,19 @@ describe("useFetch", () => {
 
   it("fetches data successfully", async () => {
     const mockData = { name: "John Doe", age: 30 };
-    const mockUrl = "https://example.com/api/data";
+    const mockUrl = "https://jsonplaceholder.typicode.com/users";
     const mockResponse = { json: jest.fn().mockResolvedValue(mockData) };
     global.fetch = jest.fn().mockResolvedValue(mockResponse);
 
-    const { result, waitForNextUpdate } = renderHook(() => useFetch(mockUrl));
+    const { result } = renderHook(() => useFetch(mockUrl),
+      {
+        wrapper: BrowserRouter
+      });
     expect(result.current.loading).toBeTruthy();
 
-    await act(async () => {
-      await waitForNextUpdate();
-    });
-
-    expect(result.current.data).toEqual(mockData);
-    expect(result.current.error).toBeUndefined();
-    expect(result.current.loading).toBeFalsy();
+    await waitFor(() => expect(result.current.data).toEqual(mockData));
+    await waitFor(() => expect(result.current.error).toBeUndefined());
+    await waitFor(() => expect(result.current.loading).toBeFalsy());
     expect(fetch).toHaveBeenCalledWith(mockUrl, {
       signal: expect.any(AbortSignal),
       headers: {
@@ -32,19 +31,18 @@ describe("useFetch", () => {
   });
 
   it("handles other errors correctly", async () => {
-    const mockUrl = "https://example.com/api/data";
+    const mockUrl = "https://jsonplaceholder.typicode.com/users";
     const mockResponse = new Error("Some error occurred");
     global.fetch = jest.fn().mockRejectedValue(mockResponse);
 
-    const { result, waitForNextUpdate } = renderHook(() => useFetch(mockUrl));
+    const { result } = renderHook(() => useFetch(mockUrl),
+      {
+        wrapper: BrowserRouter
+      });
     expect(result.current.loading).toBeTruthy();
 
-    await act(async () => {
-      await waitForNextUpdate();
-    });
-
-    expect(result.current.data).toBeUndefined();
-    expect(result.current.error).toEqual(mockResponse);
+    await waitFor(() => expect(result.current.data).toBeUndefined())
+    await waitFor(() => expect(expect(result.current.error).toEqual("Some error occurred")));
     expect(result.current.loading).toBeFalsy();
     expect(fetch).toHaveBeenCalledWith(mockUrl, {
       signal: expect.any(AbortSignal),
@@ -52,5 +50,6 @@ describe("useFetch", () => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     });
-  });
+  }
+  );
 });
