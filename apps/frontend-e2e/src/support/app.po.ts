@@ -9,7 +9,7 @@ export const getLikeButton = () => {
 export const login = () => {
   cy.visit('/login');
 
-  cy.get('input[name="email"]').type('louispelarrey@gmail.com');
+  cy.get('input[name="email"]').type('louispelarre@gmail.com');
   cy.get('input[name="password"]').type('string');
   cy.get('button[type="submit"]').click();
 }

@@ -44,17 +44,17 @@ export const ShowCard = ({ id, name, description, likes, imagePath }: ShowCardPr
   const handleEdit = useCallback(() => navigate(`/edit/${id}`), [navigate, id]);
 
   return (
-    <StyleShowCard>
+    <StyleShowCard data-cy="show-card">
       <div onClick={handleCardClick}>
         <img src={imagePath} alt={name} />
         <div className="content">
-          <h2>{name}</h2>
+          <h2 data-cy="show-card-name">{name}</h2>
           <p>{description}</p>
         </div>
       </div>
       <div className="card-footer">
         <LikeButton name="like-icon" likes={likeNumber} onClick={handleLike} />
-        <EditButton onClick={handleEdit} data-testid="like-button" />
+        <EditButton onClick={handleEdit} />
         <DeleteButton onClick={handleDelete} data-testid="delete-button" />
       </div>
     </StyleShowCard>

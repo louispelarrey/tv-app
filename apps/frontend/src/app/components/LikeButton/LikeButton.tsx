@@ -12,7 +12,7 @@ interface LikeButtonProps {
 
 export const LikeButton: FC<LikeButtonProps> = ({ likes, name, onClick }) => {
   return (
-    <StyledLikeButton onClick={onClick} name={name}>
+    <StyledLikeButton onClick={onClick} name={name} data-testid="like-button" data-cy="like-button">
         {likes}
         <FontAwesomeIcon data-testid="heart-icon" icon={faHeart} />
     </StyledLikeButton>

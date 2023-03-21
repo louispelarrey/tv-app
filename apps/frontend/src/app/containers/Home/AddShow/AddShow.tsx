@@ -17,13 +17,15 @@ export const AddShow = ({onSubmit, openModal, closeModal, openModalState}: AddSh
   return (
     <StyledAddShow>
       <div onClick={openModal}>
-        <FontAwesomeIcon icon={faPlusCircle} />
+        <FontAwesomeIcon icon={faPlusCircle} data-cy="create-show-button"/>
       </div>
+
 
       <Modal
         isOpen={openModalState}
         onRequestClose={closeModal}
         style={contentStyle}
+        id="create-show-modal"
       >
         <ModalContent closeModal={closeModal} onSubmit={onSubmit} />
       </Modal>

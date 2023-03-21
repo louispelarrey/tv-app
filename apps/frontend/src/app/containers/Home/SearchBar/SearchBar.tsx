@@ -17,6 +17,7 @@ export const SearchBar = ({onChange, onClick, value}: SearchBarProps) => {
         placeholder="Rechercher une série"
         onChange={onChange}
         value={value}
+        data-cy="search-input"
       />
       <CustomCloseIcon onClick={onClick} data-testid="close-icon"/>
     </StyledSearchBar>

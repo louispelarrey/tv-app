@@ -60,8 +60,8 @@ export const ShowDetails = () => {
       {show && (
         <>
           <img src={show.imagePath} alt={show.name} id="show-image" />
-          <h1>{show.name}</h1>
-          <p>{show.description}</p>
+          <h1 data-cy="details-name">{show.name}</h1>
+          <p data-cy="details-description">{show.description}</p>
           {seasons && (
             <table className="season-table">
               <thead>
