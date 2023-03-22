@@ -36,9 +36,8 @@ export const Home = () => {
 
   const setShowsFromApi = useCallback(async () => {
     const shows = await ShowService.fetchShowsAndImages(accessToken)
-    console.log(data)
     setShows(shows)
-  }, [ShowService, accessToken, data])
+  }, [ShowService, accessToken])
 
   /**
    * Fetches the shows from the database and then fetches the images for the shows
