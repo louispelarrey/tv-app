@@ -44,8 +44,8 @@ export const App = () => {
         <Route path="/login" element={<Login />} />²
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Protected accessToken={localStorage.getItem("accessToken")}><Home/></Protected>} />
-        <Route path="/show/:id" element={<Protected accessToken={accessToken}><ShowDetails /></Protected>} />
-        <Route path="/watchlist" element={<Protected accessToken={accessToken}><Watchlist /></Protected>} />
+        <Route path="/show/:id" element={<Protected accessToken={localStorage.getItem("accessToken")}><ShowDetails /></Protected>} />
+        <Route path="/watchlist" element={<Protected accessToken={localStorage.getItem("accessToken")}><Watchlist /></Protected>} />
       </Routes>
       <GlobalStyle />
 

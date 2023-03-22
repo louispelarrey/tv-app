@@ -1,4 +1,4 @@
-import { createContext, Dispatch, FC, ReactNode, SetStateAction, useEffect, useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useEffect, useState } from "react";
 
 export interface UserContextProps {
   accessToken: string;
@@ -16,7 +16,7 @@ export const UserContext = createContext<UserContextProps>({
   },
 });
 
-export const UserProvider = ({ children }: any) => {
+export const UserProvider = ({ children }: UserProviderProps) => {
   const [accessToken, setAccessToken] = useState("")
 
   useEffect(() => {
