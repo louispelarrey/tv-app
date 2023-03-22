@@ -75,7 +75,7 @@ export const Home = () => {
   const handleClickDeleteSearch = () => setSearch("");
 
   return (
-    <StyledHome>
+    <>
       <ShowContextBar
         onChange={handleSearch}
         onClick={handleClickDeleteSearch}
@@ -85,16 +85,19 @@ export const Home = () => {
         closeModal={closeModal}
         openModalState={modalIsOpen}
       />
-      {filterShows && filterShows.map(show => (
-        <ShowCard
-          key={show.id}
-          id={show.id}
-          name={show.name}
-          description={show.description}
-          imagePath={show.imagePath}
-          likes={show.followedBy.length}
-        />
-      ))}
-    </StyledHome>
+      <StyledHome>
+
+        {filterShows && filterShows.map(show => (
+          <ShowCard
+            key={show.id}
+            id={show.id}
+            name={show.name}
+            description={show.description}
+            imagePath={show.imagePath}
+            likes={show.followedBy.length}
+          />
+        ))}
+      </StyledHome>
+    </>
   );
 }

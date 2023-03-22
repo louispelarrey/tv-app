@@ -16,6 +16,10 @@ const StyledSearchBar = styled.div`
   padding: 0 1rem 0 1rem;
   border: 2px solid white;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+
+  @media (min-width: 765px) {
+    width: 40%;
+  }
 `;
 
 const StyledInput = styled(Input)`
@@ -33,6 +37,7 @@ const StyledInput = styled(Input)`
   font-size: 1.15rem;
   margin: 0px;
   padding: 0px;
+
 `;
 
 const StyledIcon = styled(FontAwesomeIcon)`

@@ -8,7 +8,7 @@ const StyledHome = styled.div`
   flex-wrap: wrap;
   flex-shrink: 1;
   flex-basis: 0;
-  @media (max-width: 1000px) {
+  @media (max-width: 765px) {
     flex-direction: column;
   }
 `;
