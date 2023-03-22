@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import styled from "styled-components"
 import { DeleteButton } from "../../components/DeleteButton/DeleteButton"
 import { EditButton } from "../../components/EditButton/EditButton"
+import { Table } from "../../components/Table/Table"
 import { ServiceContext } from "../../context/Service/ServiceContext"
 import { UserContext, UserContextProps } from "../../context/User/UserContext"
 import SeasonService from "../../services/season/SeasonService"
@@ -22,7 +23,7 @@ export const ShowDetails = () => {
   const [show, setShow] = useState<Show | undefined>(undefined)
   const [seasons, setSeasons] = useState<Season[] | undefined>(undefined)
 
-  const {accessToken} = useContext<UserContextProps>(UserContext);
+  const { accessToken } = useContext<UserContextProps>(UserContext);
   const {
     services: {
       ShowService,
@@ -63,26 +64,16 @@ export const ShowDetails = () => {
           <h1 data-cy="details-name">{show.name}</h1>
           <p data-cy="details-description">{show.description}</p>
           {seasons && (
-            <table className="season-table">
-              <thead>
-                <tr>
-                  <th>Saison</th>
-                  <th>Description</th>
-                  <th></th>
-                  <th></th>
+            <Table columns={["Saison", "Description", "", ""]}>
+              {seasons.map((season) => (
+                <tr key={season.id}>
+                  <td>{season.name}</td>
+                  <td>{season.description}</td>
+                  <td><EditButton onClick={() => handleEdit(season.id)} /></td>
+                  <td><DeleteButton onClick={() => handleDelete(season.id)} /></td>
                 </tr>
-              </thead>
-              <tbody>
-                {seasons.map((season) => (
-                  <tr key={season.id}>
-                    <td>{season.name}</td>
-                    <td>{season.description}</td>
-                    <td><EditButton onClick={() => handleEdit(season.id)}/></td>
-                    <td><DeleteButton onClick={() => handleDelete(season.id)}/></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+              ))}
+            </Table>
           )}
         </>
       )}
