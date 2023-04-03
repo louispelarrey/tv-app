@@ -1,9 +1,10 @@
 import { FC, useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button, Input, SpanError } from '../../components';
+import { Input, SpanError } from '../../components';
 import { UserContext } from '../../context/User/UserContext';
 import { useForm } from "react-hook-form";
 import { StyledLogin } from './Login.style';
+import { Button } from '@tv-app/ui';
 
 export interface LoginFormInput {
   email: string;

@@ -2,9 +2,8 @@ import App from './app/App';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { UserProvider } from './app/context/User/UserContext';
-import { SuspenseLoader } from './app/components/Suspense/SuspenseLoader';
-import { ServiceProvider } from './app/context/Service/ServiceContext';
+import { SuspenseLoader } from '@tv-app/ui';
+import { UserProvider, ServiceProvider } from '@tv-app/utility';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const root = ReactDOM.createRoot(
